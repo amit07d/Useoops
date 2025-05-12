@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import useLocalStorage from "./useLocalStorage";
+import useLocalStorage from "./UseLocalStorage";
 
 function ThemeSwitch() {
   const [theme, setTheme] = useLocalStorage("theme", "light");
