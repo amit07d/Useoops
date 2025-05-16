@@ -1,5 +1,5 @@
 import React from 'react';
-import useFetch from './useFetch'; // ✅ Corrected name
+import useFetch from './Usefetch.jsx'; 
 
 function UseFetchTest() {
   const { data, error, loading } = useFetch("https://dummyjson.com/products");
