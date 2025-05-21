@@ -4,7 +4,7 @@ import { FoodContext } from "../context/FoodContext";
 
 function Navbar() {
   const { searchParam, setSearchParam, handleSubmit } = useContext(FoodContext);
-  console.log(searchParam);
+  // console.log(searchParam);
 
   return (
     <nav className="bg-white shadow-md px-6 py-4 flex items-center justify-between">

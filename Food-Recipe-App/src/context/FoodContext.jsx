@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 export const FoodContext = createContext(null);
 
@@ -7,6 +7,7 @@ export default function FoodContextProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [recipeList, setRecipeList] = useState([]);
+  const [getrecipeDetails, setGetrecipeDetails] = useState(null);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -24,7 +25,7 @@ export default function FoodContextProvider({ children }) {
         setRecipeList(responseData.data?.recipes);
         setSearchParam("");
       }
-      console.log(responseData);
+      //console.log(responseData);
     } catch (error) {
       console.log(error);
       setError("Something went wrong. Please try again.");
@@ -37,11 +38,15 @@ export default function FoodContextProvider({ children }) {
     <FoodContext.Provider
       value={{
         searchParam,
+        setLoading,
         loading,
         recipeList,
+        setError,
         error,
         setSearchParam,
         handleSubmit,
+        getrecipeDetails,
+        setGetrecipeDetails,
       }}
     >
       {children}

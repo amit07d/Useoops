@@ -28,10 +28,29 @@ function Home() {
       )}
 
       {!loading && !error && recipeList.length === 0 && (
-        <div className="text-gray-600 text-center mt-6">
-          Items not available right now.
-        </div>
-      )}
+  <div className="flex flex-col items-center justify-center text-center py-16 px-4 sm:px-6 lg:px-8 bg-yellow-50 rounded-xl shadow-md border border-yellow-200 mt-10 mx-auto max-w-xl">
+    <svg
+      className="w-16 h-16 text-yellow-400 mb-4 animate-bounce"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+    <h2 className="text-2xl font-bold text-yellow-600 mb-2">
+      Oops! No Recipes Found
+    </h2>
+    <p className="text-gray-700 text-md">
+      Try searching something else — we couldn’t find any recipes with your search.
+    </p>
+  </div>
+)}
+
     </div>
   );
 }
