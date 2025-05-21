@@ -8,6 +8,17 @@ export default function FoodContextProvider({ children }) {
   const [error, setError] = useState(null);
   const [recipeList, setRecipeList] = useState([]);
   const [getrecipeDetails, setGetrecipeDetails] = useState(null);
+  const [savefavourite, setSavefavourite] = useState([]);
+
+  const addToFavourites = (favouriteFood) => {
+    if (!savefavourite.some((fav) => fav.id === favouriteFood.id)) {
+      setSavefavourite((prev) => [...prev, favouriteFood]);
+    }
+  };
+
+  const removeFromFavourites = (id) => {
+    setSavefavourite((prev) => prev.filter((item) => item.id !== id));
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -47,6 +58,10 @@ export default function FoodContextProvider({ children }) {
         handleSubmit,
         getrecipeDetails,
         setGetrecipeDetails,
+        savefavourite,
+        setSavefavourite,
+        addToFavourites,
+        removeFromFavourites
       }}
     >
       {children}

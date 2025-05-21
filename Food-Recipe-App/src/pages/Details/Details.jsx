@@ -10,6 +10,7 @@ function Details() {
     error,
     setError,
     setLoading,
+    addToFavourites
   } = useContext(FoodContext);
 
   const { id } = useParams();
@@ -67,9 +68,7 @@ function Details() {
                   By {getrecipeDetails.publisher}
                 </span>
                 <button
-                  onClick={() => {
-                    console.log("Saved to favorites!");
-                  }}
+                   onClick={() => addToFavourites(getrecipeDetails)}
                   className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-4 py-2 rounded-full hover:from-pink-600 hover:to-rose-600 transition-all duration-300"
                 >
                   <svg
