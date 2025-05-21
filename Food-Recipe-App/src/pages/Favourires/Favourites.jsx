@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { FoodContext } from "../../context/FoodContext";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 function Favourites() {
   const { savefavourite, removeFromFavourites } = useContext(FoodContext);
@@ -9,7 +10,9 @@ function Favourites() {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-3">My Favourite Recipes</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">
+            My Favourite Recipes
+          </h1>
           <div className="w-24 h-1 bg-gradient-to-r from-rose-500 to-amber-500 mx-auto rounded-full"></div>
         </div>
 
@@ -29,8 +32,12 @@ function Favourites() {
                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
               />
             </svg>
-            <h2 className="text-xl font-medium text-gray-600 mb-2">No favourites yet</h2>
-            <p className="text-gray-500 mb-6">Save your favorite recipes to see them here</p>
+            <h2 className="text-xl font-medium text-gray-600 mb-2">
+              No favourites yet
+            </h2>
+            <p className="text-gray-500 mb-6">
+              Save your favorite recipes to see them here
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -84,9 +91,11 @@ function Favourites() {
                     {recipe.publisher}
                   </p>
                   <div className="flex justify-between items-center">
-                    
                     <button
-                      onClick={() => removeFromFavourites(recipe.id)}
+                      onClick={() => {
+                        removeFromFavourites(recipe.id);
+                        toast.success("Removed from favourites");
+                      }}
                       className="text-sm px-4 py-2 bg-rose-50 text-rose-600 rounded-full hover:bg-rose-100 transition-colors"
                     >
                       Remove

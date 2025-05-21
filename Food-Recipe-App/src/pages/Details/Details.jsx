@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { FoodContext } from "../../context/FoodContext";
+import toast from "react-hot-toast";
 
 function Details() {
   const {
@@ -68,7 +69,11 @@ function Details() {
                   By {getrecipeDetails.publisher}
                 </span>
                 <button
-                   onClick={() => addToFavourites(getrecipeDetails)}
+                  onClick={() => {
+                    addToFavourites(getrecipeDetails);
+                    toast.success("Recipe added to favourites!");
+                  }}
+                  
                   className="flex items-center gap-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-4 py-2 rounded-full hover:from-pink-600 hover:to-rose-600 transition-all duration-300"
                 >
                   <svg
