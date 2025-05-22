@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export const FoodContext = createContext(null);
 
@@ -8,11 +9,21 @@ export default function FoodContextProvider({ children }) {
   const [error, setError] = useState(null);
   const [recipeList, setRecipeList] = useState([]);
   const [getrecipeDetails, setGetrecipeDetails] = useState(null);
-  const [savefavourite, setSavefavourite] = useState([]);
+  const [savefavourite, setSavefavourite] = useState(() => {
+    const saved = localStorage.getItem('favourites');
+    return saved ? JSON.parse(saved) : []
+  });
+
+  useEffect(() => {
+    localStorage.setItem('favourites', JSON.stringify(savefavourite))
+  },[savefavourite])
 
   const addToFavourites = (favouriteFood) => {
     if (!savefavourite.some((fav) => fav.id === favouriteFood.id)) {
       setSavefavourite((prev) => [...prev, favouriteFood]);
+      toast.success("Recipe added to favourites!", {icon: "💝"});
+    } else {
+      toast("Already in favourites", {icon: "💾"})
     }
   };
 

@@ -94,7 +94,7 @@ function Favourites() {
                     <button
                       onClick={() => {
                         removeFromFavourites(recipe.id);
-                        toast.success("Removed from favourites");
+                        toast.success("Removed from favourites", {icon: "😞"});
                       }}
                       className="text-sm px-4 py-2 bg-rose-50 text-rose-600 rounded-full hover:bg-rose-100 transition-colors"
                     >
