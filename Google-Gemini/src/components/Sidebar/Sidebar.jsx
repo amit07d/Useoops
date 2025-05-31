@@ -1,9 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { assets } from "../../assets/assets.js";
+import { GeminiContext } from "../../context/GeminiContext.jsx";
 
 function Sidebar() {
   const [isPinned, setIsPinned] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  const { onSet, prevPrompts, setRecentPrompt, newChat } = useContext(GeminiContext);
+
+  const loadRecentData = async (prompt) => {
+    setRecentPrompt(prompt);
+    await onSet(prompt);
+  };
 
   const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => {
@@ -11,9 +19,9 @@ function Sidebar() {
       setIsHovered(false);
     }
   };
-  
+
   const togglePin = () => {
-    setIsPinned(prev => !prev);
+    setIsPinned((prev) => !prev);
     if (!isPinned) {
       setIsHovered(true);
     }
@@ -32,14 +40,18 @@ function Sidebar() {
         <div className="mb-6 cursor-pointer">
           <img
             onClick={togglePin}
-            src={assets.menu_icon} 
-            alt="Menu" 
-            className="h-6 w-6" 
+            src={assets.menu_icon}
+            alt="Menu"
+            className="h-6 w-6"
           />
         </div>
 
-        <div className="flex items-center gap-2 bg-gray-700 p-2 rounded-lg cursor-pointer hover:bg-gray-600 mb-4">
-          <img src={assets.plus_icon} alt="New Chat" className="h-5 w-5" />
+        <div
+          onClick={() => newChat()}
+          className="flex items-center gap-2 bg-gray-700 p-2 rounded-lg cursor-pointer hover:bg-gray-600 mb-4">
+          <img
+            onClick={() => newChat()}
+            src={assets.plus_icon} alt="New Chat" className="h-5 w-5" />
           {isExpanded && <p>New Chat</p>}
         </div>
 
@@ -47,15 +59,20 @@ function Sidebar() {
           <p className="text-gray-400 uppercase text-xs mb-2">Recent</p>
         )}
 
-        <div className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded cursor-pointer">
-          <img
-            src={assets.message_icon}
-            alt="Message Icon"
-            className="h-5 w-5"
-          />
-          {isExpanded && <p>What is React...</p>}  
-          {/* This is sample tag i will add later history*/}
-        </div>
+        {prevPrompts.map((item) => (
+          <div
+            key={item}
+            onClick={() => loadRecentData(item)}
+            className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded cursor-pointer"
+          >
+            <img
+              src={assets.message_icon}
+              alt="Message Icon"
+              className="h-5 w-5"
+            />
+            {isExpanded && <p>{item.slice(0, 18)}...</p>}
+          </div>
+        ))}
       </div>
 
       <div className="space-y-3">

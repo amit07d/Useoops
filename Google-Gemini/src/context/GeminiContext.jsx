@@ -13,39 +13,51 @@ export default function GeminiContextProvider({ children }) {
   const [error, setError] = useState("");
 
   const typingEffect = (index, nextword) => {
-      setTimeout(() => {
-        setResultData((prev) => prev+nextword)
-      }, 75*index);
+    setTimeout(() => {
+      setResultData((prev) => prev + nextword);
+    }, 75 * index);
+  };
+  
+  const newChat = () => {
+    setLoading(false)
+    setShowResult(false)
   }
 
-  const onSet = async () => {
+  const onSet = async (prompt) => {
     setResultData("");
-    setLoading("true");
-    setRecentPrompt(input)
+    setLoading(true);
+    setError("");
     setShowResult(true);
-    const response = await main(input);
-    
-    const responseText = response.split("**");
-    let newResponse;
-    newResponse = "";
-    for (let i = 0; i < responseText.length; i++) {
-      if (i === 0 || i % 2 !== 1) {
-        newResponse += responseText[i];
-      } else {
-        newResponse += "<b>" + responseText[i] + "</b>";
+
+    const query = prompt ?? input;
+
+    setPrevPrompts((prev) => [...prev, query]);
+    setRecentPrompt(query);
+
+    try {
+      const response = await main(query);
+
+      const responseText = response.split("**");
+      let newResponse = "";
+
+      for (let i = 0; i < responseText.length; i++) {
+        newResponse += i % 2 === 0
+          ? responseText[i]
+          : `<b>${responseText[i]}</b>`;
       }
-    }
 
-    let recentResponse = newResponse.split("*").join("</br>")
+      const formattedResponse = newResponse.split("*").join("</br>");
+      const typingResponse = formattedResponse.split(" ");
 
-    let typingResponse = recentResponse.split(" ")
-    for (let i = 0; i < typingResponse.length; i++)
-    {
-      const nextLine = typingResponse[i];
-      typingEffect(i,nextLine + " ")
+      for (let i = 0; i < typingResponse.length; i++) {
+        typingEffect(i, typingResponse[i] + " ");
+      }
+    } catch (err) {
+      setError("Failed to fetch response");
+    } finally {
+      setLoading(false);
+      setInput("");
     }
-    setLoading(false)
-    setInput("")
   };
 
   const contextvalue = {
@@ -60,7 +72,9 @@ export default function GeminiContextProvider({ children }) {
     loading,
     resultData,
     error,
+    newChat
   };
+
   return (
     <GeminiContext.Provider value={contextvalue}>
       {children}
