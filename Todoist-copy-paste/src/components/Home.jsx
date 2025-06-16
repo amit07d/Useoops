@@ -38,7 +38,7 @@ function Home() {
       setTitle("");
       setContent("");
       setSearchParams({});
-      toast.success(pasteId ? "Paste updated successfully!" : "New paste created!");
+      toast.success(pasteId ? "Todo updated successfully!" : "Todo Created Successfully!");
     } catch (error) {
       console.error("Save failed:", error);
       toast.error(`Failed to save: ${error.message}`);
