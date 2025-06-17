@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { nanoid } from 'nanoid';
 import { toast } from "react-toastify";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { addTodo, updateTodo } from "../features/paste/pasteSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function Home() {
   const [title, setTitle] = useState("");
@@ -13,6 +13,25 @@ function Home() {
   const pasteId = searchParams.get("pasteId");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const allTodoContent = useSelector((state) => state.paste.pastes);
+
+  useEffect(() => {
+    if (pasteId) {
+      const editTodo = allTodoContent.find((todo) => todo._id === pasteId);
+      if (editTodo) {
+        setTitle(editTodo.title);
+        setContent(editTodo.content);
+      } else {
+        toast.error("Todo not found");
+        navigate("/");
+      }
+    } else {
+      setTitle("");
+      setContent("");
+    }
+  }, [pasteId, allTodoContent, navigate]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -25,20 +44,22 @@ function Home() {
     }
 
     try {
+      const oldPaste = allTodoContent.find((todo) => todo._id === pasteId);
+
       const paste = {
         title: title.trim(),
         content: content.trim(),
         _id: pasteId || nanoid(),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        createdAt: oldPaste?.createdAt || new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       dispatch(pasteId ? updateTodo(paste) : addTodo(paste));
-      
+
       setTitle("");
       setContent("");
       setSearchParams({});
-      toast.success(pasteId ? "Todo updated successfully!" : "Todo Created Successfully!");
+      toast.success(pasteId ? "Todo updated successfully!" : "Todo created successfully!");
     } catch (error) {
       console.error("Save failed:", error);
       toast.error(`Failed to save: ${error.message}`);
