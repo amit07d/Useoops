@@ -111,7 +111,7 @@ function Main() {
               onChange={(e) => setInput(e.target.value)}
               value={input}
               type="text"
-              placeholder="🔒 Enter a prompt for Gemini"
+              placeholder="🔒 Enter a prompt for Omnify"
               className="w-full py-3 outline-none bg-transparent text-gray-700 placeholder-gray-400"
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
