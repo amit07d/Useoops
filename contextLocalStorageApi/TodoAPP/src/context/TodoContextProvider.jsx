@@ -1,9 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TodoContext from "./TodoContext";
 import { nanoid } from "nanoid";
 
 const TodoContextProvider = ({ children }) => {
   const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    const savedTodos = JSON.parse(localStorage.getItem("todos")) || [];
+    if (savedTodos.length > 0) {
+      setTodos(savedTodos);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }, [todos])
 
   const addTodo = (todoText) => {
     setTodos([...todos, { id: nanoid(), todo: todoText, completed: false }]);
@@ -28,6 +39,11 @@ const TodoContextProvider = ({ children }) => {
       )
     );
   };
+
+  const clearTodos = () => {
+    setTodos([])
+    localStorage.removeItem("todos")
+  }
 
   return (
     <TodoContext.Provider
