@@ -1,4 +1,4 @@
-```jsx
+
 import React, { useContext, useState } from "react";
 import { assets } from "../../assets/assets.js";
 import { GeminiContext } from "../../context/GeminiContext.jsx";
