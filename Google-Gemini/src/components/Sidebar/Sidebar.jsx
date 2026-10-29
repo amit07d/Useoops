@@ -1,3 +1,4 @@
+```jsx
 import React, { useContext, useState } from "react";
 import { assets } from "../../assets/assets.js";
 import { GeminiContext } from "../../context/GeminiContext.jsx";
@@ -6,7 +7,8 @@ function Sidebar() {
   const [isPinned, setIsPinned] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const { onSet, prevPrompts, setRecentPrompt, newChat } = useContext(GeminiContext);
+  const { onSet, prevPrompts, setRecentPrompt, newChat } =
+    useContext(GeminiContext);
 
   const loadRecentData = async (prompt) => {
     setRecentPrompt(prompt);
@@ -14,6 +16,7 @@ function Sidebar() {
   };
 
   const handleMouseEnter = () => setIsHovered(true);
+
   const handleMouseLeave = () => {
     if (!isPinned) {
       setIsHovered(false);
@@ -22,6 +25,7 @@ function Sidebar() {
 
   const togglePin = () => {
     setIsPinned((prev) => !prev);
+
     if (!isPinned) {
       setIsHovered(true);
     }
@@ -31,8 +35,9 @@ function Sidebar() {
 
   return (
     <div
-      className={`h-screen ${isExpanded ? "w-64" : "w-20"
-        } bg-gray-900 text-white flex flex-col justify-between p-4 transition-all duration-300`}
+      className={`h-screen ${
+        isExpanded ? "w-64" : "w-20"
+      } bg-gray-900 text-white flex flex-col justify-between p-4 transition-all duration-300`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -48,20 +53,25 @@ function Sidebar() {
 
         <div
           onClick={() => newChat()}
-          className="flex items-center gap-2 bg-gray-700 p-2 rounded-lg cursor-pointer hover:bg-gray-600 mb-4">
+          className="flex items-center gap-2 bg-gray-700 p-2 rounded-lg cursor-pointer hover:bg-gray-600 mb-4"
+        >
           <img
-            onClick={() => newChat()}
-            src={assets.plus_icon} alt="New Chat" className="h-5 w-5" />
+            src={assets.plus_icon}
+            alt="New Chat"
+            className="h-5 w-5"
+          />
           {isExpanded && <p>New Chat</p>}
         </div>
 
         {isExpanded && (
-          <p className="text-gray-400 uppercase text-xs mb-2">Recent</p>
+          <p className="text-gray-400 uppercase text-xs mb-2">
+            Recent
+          </p>
         )}
 
-        {prevPrompts.map((item) => (
+        {prevPrompts.map((item, index) => (
           <div
-            key={item}
+            key={`${item}-${index}`}
             onClick={() => loadRecentData(item)}
             className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded cursor-pointer"
           >
@@ -70,24 +80,38 @@ function Sidebar() {
               alt="Message Icon"
               className="h-5 w-5"
             />
-            {isExpanded && <p>{item.slice(0, 18)}...</p>}
+            {isExpanded && (
+              <p>{item.length > 18 ? `${item.slice(0, 18)}...` : item}</p>
+            )}
           </div>
         ))}
       </div>
 
       <div className="space-y-3">
         <div className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded cursor-pointer">
-          <img src={assets.question_icon} alt="Help" className="h-5 w-5" />
+          <img
+            src={assets.question_icon}
+            alt="Help"
+            className="h-5 w-5"
+          />
           {isExpanded && <p>Help</p>}
         </div>
 
         <div className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded cursor-pointer">
-          <img src={assets.history_icon} alt="Activity" className="h-5 w-5" />
+          <img
+            src={assets.history_icon}
+            alt="Activity"
+            className="h-5 w-5"
+          />
           {isExpanded && <p>Activity</p>}
         </div>
 
         <div className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded cursor-pointer">
-          <img src={assets.setting_icon} alt="Settings" className="h-5 w-5" />
+          <img
+            src={assets.setting_icon}
+            alt="Settings"
+            className="h-5 w-5"
+          />
           {isExpanded && <p>Settings</p>}
         </div>
       </div>
@@ -96,3 +120,4 @@ function Sidebar() {
 }
 
 export default Sidebar;
+```
